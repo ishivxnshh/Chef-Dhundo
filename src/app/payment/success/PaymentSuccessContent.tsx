@@ -42,7 +42,7 @@ export default function PaymentSuccessContent() {
 
           <div className="flex flex-col sm:flex-row gap-3">
             <Link 
-              href="/findchef"
+              href="/findchefs"
               className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />

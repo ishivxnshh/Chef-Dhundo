@@ -21,13 +21,6 @@ function Footer() {
     { href: "/refunds", text: "Refunds & Cancellations" },
   ];
 
-  const serviceLinks = [
-    { href: "/findchefs", text: "Private Cooking" },
-    { href: "/findchefs", text: "Catering Services" },
-    { href: "/findchefs", text: "Cooking Classes" },
-    { href: "/findchefs", text: "Meal Preparation" },
-  ];
-
   const socialLinks = [
     { href: "#", icon: "facebook", label: "Facebook" },
     { href: "#", icon: "twitter", label: "Twitter" },
@@ -119,22 +112,6 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-orange-500">Our Services</h3>
-            <ul className="space-y-2">
-              {serviceLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-300 hover:text-orange-500 transition-colors duration-200 text-sm"
-                  >
-                    {link.text}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* Policy Pages */}
           <div className="space-y-4">

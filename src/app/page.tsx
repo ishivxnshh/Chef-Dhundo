@@ -173,9 +173,9 @@ export default function Home() {
                   e.preventDefault();
                   const search = (e.currentTarget.elements.namedItem('findchef-search') as HTMLInputElement).value;
                   if (search) {
-                    window.location.href = `/findchef?search=${encodeURIComponent(search)}`;
+                    window.location.href = `/findchefs?search=${encodeURIComponent(search)}`;
                   } else {
-                    window.location.href = '/findchef';
+                    window.location.href = '/findchefs';
                   }
                 }}>
                   <div className="space-y-2 flex-1">

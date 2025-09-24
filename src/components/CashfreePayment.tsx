@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { load, CashfreeInstance, CheckoutOptions, CheckoutResponse } from "@cashfreepayments/cashfree-js";
+import { load, CashfreeInstance, CheckoutResponse } from "@cashfreepayments/cashfree-js";
 
 interface CashfreePaymentProps {
   amount: number;
@@ -29,14 +29,12 @@ const CashfreePayment: React.FC<CashfreePaymentProps> = ({
   amount,
   planName,
   planId,
-  onSuccess,
   onFailure,
   disabled = false,
   className = ''
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
-  const [paymentSessionId, setPaymentSessionId] = useState<string | null>(null);
   const [cashfree, setCashfree] = useState<CashfreeInstance | null>(null);
 
   // Initialize Cashfree SDK
@@ -45,7 +43,7 @@ const CashfreePayment: React.FC<CashfreePaymentProps> = ({
       try {
         console.log('🔄 Initializing Cashfree SDK...');
         const cashfreeInstance = await load({
-          mode: "production" // Change to "sandbox" for testing
+          mode: "sandbox" // Change to "sandbox" for testing
         });
         console.log('✅ Cashfree SDK initialized successfully:', cashfreeInstance);
         setCashfree(cashfreeInstance);
