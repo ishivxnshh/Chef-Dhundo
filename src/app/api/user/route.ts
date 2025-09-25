@@ -44,15 +44,28 @@ export async function GET() {
 
   try {
     const notion = new Client({ auth: notionApiKey });
-    
-    // Convert database ID to string explicitly to avoid type errors
     const response = await notion.databases.query({
       database_id: notionDatabaseId as string,
     });
-    
     return NextResponse.json(response.results);
   } catch (error) {
-    console.error('Error fetching data from Notion:', error);
-    return NextResponse.json({ error: 'Failed to fetch data from Notion' }, { status: 500 });
+    console.error('❌ Error fetching data from Notion:', error);
+    if (error instanceof Error) {
+      // Log error details if available
+      // @ts-ignore
+      if (error.body) {
+        console.error('❌ Notion API error body:', (error as any).body);
+      }
+      // @ts-ignore
+      if (error.code) {
+        console.error('❌ Notion API error code:', (error as any)?.code);
+      }
+      // @ts-ignore
+      if (error.status) {
+        console.error('❌ Notion API error status:', (error as any).status);
+      }
+      return NextResponse.json({ error: error.message, details: error }, { status: 500 });
+    }
+    return NextResponse.json({ error: 'Failed to fetch data from Notion', details: error }, { status: 500 });
   }
 }

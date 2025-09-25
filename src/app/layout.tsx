@@ -27,9 +27,7 @@ export default function RootLayout({
   return (
     <ClerkProvider publishableKey={publishableKey}>
       <html lang="en">
-        <head>
-          <script src="https://sdk.cashfree.com/js/v3/cashfree.js" async></script>
-        </head>
+        <head></head>
         <body className={inter.className}>
           <Navbar />
           <main className="min-h-screen">

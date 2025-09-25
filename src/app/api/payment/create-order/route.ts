@@ -58,22 +58,20 @@ export async function POST(request: NextRequest) {
 
     // Initialize Cashfree with your credentials
     // Check if credentials look like test credentials (usually start with 'TEST_' or 'cfsk_test_)
-    const isTestCredentials = clientId?.startsWith('TEST_') || clientSecret?.startsWith('cfsk_test_');
+    // Use .includes('test') to detect test credentials for both clientId and clientSecret
+    const isTestCredentials = (clientId?.toLowerCase().includes('test') || clientSecret?.toLowerCase().includes('test'));
     const environment = isTestCredentials ? CFEnvironment.SANDBOX : CFEnvironment.PRODUCTION;
-    
+
     console.log('Using environment:', isTestCredentials ? 'SANDBOX' : 'PRODUCTION');
-    console.log('Reason:', isTestCredentials ? 'Credentials start with TEST_ or cfsk_test_' : 'Production credentials detected');
-    
-    // Check for credential mismatch
-    if (clientId?.startsWith('TEST_') && !clientSecret?.startsWith('cfsk_test_')) {
-      console.error('❌ CREDENTIAL MISMATCH: Client ID is TEST but Client Secret is PRODUCTION');
+    console.log('Reason:', isTestCredentials ? 'Credentials include "test" (sandbox)' : 'Production credentials detected');
+
+    // Check for credential mismatch (test/prod)
+    if ((clientId?.toLowerCase().includes('test') && !clientSecret?.toLowerCase().includes('test')) ||
+        (!clientId?.toLowerCase().includes('test') && clientSecret?.toLowerCase().includes('test'))) {
+      console.error('❌ CREDENTIAL MISMATCH: One credential is TEST, the other is PRODUCTION');
       console.error('Fix: Get both TEST credentials or both PRODUCTION credentials from Cashfree Dashboard');
     }
-    if (!clientId?.startsWith('TEST_') && clientSecret?.startsWith('cfsk_test_')) {
-      console.error('❌ CREDENTIAL MISMATCH: Client Secret is TEST but Client ID is PRODUCTION');
-      console.error('Fix: Get both TEST credentials or both PRODUCTION credentials from Cashfree Dashboard');
-    }
-    
+
     // CRITICAL: Check if using production credentials with HTTP URLs (only for localhost)
     console.log('🔍 URL Validation Check:');
     console.log('  - finalAppUrl:', finalAppUrl);
@@ -81,7 +79,7 @@ export async function POST(request: NextRequest) {
     console.log('  - includes localhost:', finalAppUrl?.includes('localhost'));
     console.log('  - starts with http://', finalAppUrl?.startsWith('http://'));
     console.log('  - VERCEL_URL env var:', process.env.VERCEL_URL);
-    
+
     if (!isTestCredentials && finalAppUrl && finalAppUrl.includes('localhost') && finalAppUrl.startsWith('http://')) {
       console.error('❌ PRODUCTION CREDENTIALS WITH HTTP URL');
       console.error('Cashfree production environment requires HTTPS URLs');
@@ -89,7 +87,7 @@ export async function POST(request: NextRequest) {
       console.error('1. Get TEST credentials from Cashfree Dashboard (recommended for development)');
       console.error('2. Use ngrok or similar service to create HTTPS URLs for localhost');
       console.error('3. Deploy to production with HTTPS domain');
-      
+
       return NextResponse.json(
         { 
           success: false, 
@@ -104,7 +102,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     const cashfree = new Cashfree(
       environment,
       clientId,
@@ -141,24 +139,35 @@ export async function POST(request: NextRequest) {
     console.log('✅ Notify URL:', orderRequest.order_meta.notify_url);
 
     // Create the order
-    const response = await cashfree.PGCreateOrder(orderRequest);
-    console.log('Order created successfully:', response.data);
+    try {
+      console.log('🔍 Sending orderRequest to Cashfree:', JSON.stringify(orderRequest, null, 2));
+      const response = await cashfree.PGCreateOrder(orderRequest);
+      console.log('✅ Order created successfully:', response.data);
 
-    // Get the payment session ID from the response
-    const responseData = response.data as {
-      payment_session_id: string;
-      [key: string]: unknown;
-    };
-    const paymentSessionId = responseData.payment_session_id;
-    
-    console.log('✅ Payment Session ID created:', paymentSessionId);
+      // Get the payment session ID from the response
+      const responseData = response.data as {
+        payment_session_id: string;
+        [key: string]: unknown;
+      };
+      const paymentSessionId = responseData.payment_session_id;
+      
+      console.log('✅ Payment Session ID created:', paymentSessionId);
 
-    return NextResponse.json({
-      success: true,
-      data: response.data,
-      orderId: orderId,
-      paymentSessionId: paymentSessionId
-    });
+      return NextResponse.json({
+        success: true,
+        data: response.data,
+        orderId: orderId,
+        paymentSessionId: paymentSessionId
+      });
+    } catch (cfError) {
+      console.error('❌ Error from Cashfree PGCreateOrder:', cfError);
+      if (cfError && typeof cfError === 'object' && 'response' in cfError) {
+        // Log full error response from Cashfree
+        // @ts-ignore
+        console.error('❌ Cashfree error response:', JSON.stringify(cfError.response?.data, null, 2));
+      }
+      throw cfError;
+    }
 
   } catch (error) {
     console.error('Error creating order:', error);
