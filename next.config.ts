@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+    qualities: [100], // Add all qualities you use (e.g., 75, 80, 90, 100)
   },
   output: 'standalone',
 };

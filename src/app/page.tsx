@@ -95,8 +95,8 @@ export default function Home() {
           <Image
             src="https://images.pexels.com/photos/3217157/pexels-photo-3217157.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt="Chef in a modern kitchen"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: 'cover' }}
             quality={100}
           />
         </div>

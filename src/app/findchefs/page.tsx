@@ -346,8 +346,8 @@ function FindChefPage() {
             <Image
               src="/website/icons/image.png"
               alt="Professional Chef Kitchen"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               className="opacity-40"
             />
           </div>
@@ -429,8 +429,8 @@ function FindChefPage() {
             <Image
               src="/website/icons/image.png"
               alt="Professional Chef Kitchen"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               className="opacity-40"
             />
           </div>

@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
       console.error('❌ Error from Cashfree PGCreateOrder:', cfError);
       if (cfError && typeof cfError === 'object' && 'response' in cfError) {
         // Log full error response from Cashfree
-        // @ts-ignore
+        // @ts-expect-error: cfError may have a 'response' property not typed by default
         console.error('❌ Cashfree error response:', JSON.stringify(cfError.response?.data, null, 2));
       }
       throw cfError;
