@@ -270,7 +270,7 @@ function UpgradePage() {
                   Test Clerk Pricing Table
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Click the button below to test Clerk's integrated pricing table component. 
+                  Click the button below to test Clerk&apos;s integrated pricing table component. 
                   This will show the pricing plans configured in your Clerk dashboard.
                 </p>
                 <Button

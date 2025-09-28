@@ -134,7 +134,7 @@ export default function RefundsPage() {
                 <h3 className="text-lg font-semibold text-gray-800">3.3 Refund Methods</h3>
                 <p className="text-gray-700">
                   Refunds will be processed using the same payment method used for the original booking. 
-                  If that's not possible, we will contact you to arrange an alternative method.
+                  If that&apos;s not possible, we will contact you to arrange an alternative method.
                 </p>
               </div>
             </CardContent>
@@ -151,8 +151,8 @@ export default function RefundsPage() {
                 <li>Services that have already been completed</li>
                 <li>Custom menu planning fees (if chef has already started work)</li>
                 <li>Special equipment or ingredient costs already incurred</li>
-                <li>No-show situations (customer doesn't appear at scheduled time)</li>
-                <li>Cancellations due to customer's change of mind after service has started</li>
+                <li>No-show situations (customer doesn&apos;t appear at scheduled time)</li>
+                <li>Cancellations due to customer&apos;s change of mind after service has started</li>
               </ul>
             </CardContent>
           </Card>
@@ -168,7 +168,7 @@ export default function RefundsPage() {
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
                 <li>If service is significantly delayed due to chef partner issues</li>
-                <li>If service quality doesn't meet agreed standards</li>
+                <li>If service quality doesn&apos;t meet agreed standards</li>
                 <li>If chef partner is unable to complete the full service</li>
                 <li>If there are issues with food safety or hygiene</li>
               </ul>
@@ -257,7 +257,7 @@ export default function RefundsPage() {
             <CardContent className="space-y-4">
               <p className="text-gray-700">
                 We reserve the right to update this refund and cancellation policy at any time. 
-                Changes will be posted on this page with an updated "Last modified" date.
+                Changes will be posted on this page with an updated &quot;Last modified&quot; date.
               </p>
               <p className="text-gray-700">
                 For existing bookings, the policy in effect at the time of booking will apply. 

@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
+import type { UpdatePageParameters } from "@notionhq/client/build/src/api-endpoints";
 
 const notionApiKey = process.env.NOTION_RESUMEDBSUB_INT;
 const notionDatabaseId = process.env.NOTION_RESUMEDBSUB_ID;
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     if (!notionApiKey || !notionDatabaseId) {
@@ -18,7 +19,8 @@ export async function PUT(
 
     const notion = new Client({ auth: notionApiKey });
     const body = await req.json();
-    const resumeId = params.id;
+    const resolvedParams = await params;
+    const resumeId = resolvedParams.id;
 
     const {
       name,
@@ -42,7 +44,7 @@ export async function PUT(
     } = body;
 
     // Build properties object with only provided fields
-    const properties: any = {};
+    const properties: UpdatePageParameters['properties'] = {};
 
     if (name !== undefined) {
       properties.Name = { title: [{ text: { content: name } }] };

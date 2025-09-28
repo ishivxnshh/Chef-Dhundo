@@ -37,7 +37,7 @@ export default function ContactPage() {
       
       toast.success('Thank you for your message! We will get back to you soon.');
       setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
+    } catch {
       toast.error('Failed to send message. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -50,7 +50,7 @@ export default function ContactPage() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Get in touch with us for any questions, support, or feedback. We're here to help!
+            Get in touch with us for any questions, support, or feedback. We&apos;re here to help!
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle className="text-2xl text-orange-600">Get in Touch</CardTitle>
                 <CardDescription>
-                  We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                  We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -132,7 +132,7 @@ export default function ContactPage() {
             <CardHeader>
               <CardTitle className="text-2xl text-orange-600">Send us a Message</CardTitle>
               <CardDescription>
-                Fill out the form below and we'll get back to you within 24 hours.
+                Fill out the form below and we&apos;ll get back to you within 24 hours.
               </CardDescription>
             </CardHeader>
             <CardContent>

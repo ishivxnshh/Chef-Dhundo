@@ -25,8 +25,8 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-gray-700">
-                Welcome to ChefDhundo ("we," "our," or "us"). These Terms and Conditions ("Terms") govern your use of our website, 
-                mobile application, and services (collectively, the "Service") operated by ChefDhundo.
+                Welcome to ChefDhundo (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). These Terms and Conditions (&quot;Terms&quot;) govern your use of our website, 
+                mobile application, and services (collectively, the &quot;Service&quot;) operated by ChefDhundo.
               </p>
               <p className="text-gray-700">
                 By accessing or using our Service, you agree to be bound by these Terms. If you disagree with any part of these terms, 
@@ -199,7 +199,7 @@ export default function TermsPage() {
             <CardContent className="space-y-4">
               <p className="text-gray-700">
                 You agree to defend, indemnify, and hold harmless ChefDhundo and its officers, directors, employees, and agents 
-                from and against any claims, damages, obligations, losses, liabilities, costs, or debt, and expenses (including attorney's fees).
+                from and against any claims, damages, obligations, losses, liabilities, costs, or debt, and expenses (including attorney&apos;s fees).
               </p>
             </CardContent>
           </Card>

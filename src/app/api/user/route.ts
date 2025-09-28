@@ -52,17 +52,17 @@ export async function GET() {
     console.error('❌ Error fetching data from Notion:', error);
     if (error instanceof Error) {
       // Log error details if available
-      // @ts-ignore
+      // @ts-expect-error - Notion API error may have additional properties
       if (error.body) {
-        console.error('❌ Notion API error body:', (error as any).body);
+        console.error('❌ Notion API error body:', (error as unknown as Record<string, unknown>).body);
       }
-      // @ts-ignore
+      // @ts-expect-error - Notion API error may have additional properties
       if (error.code) {
-        console.error('❌ Notion API error code:', (error as any)?.code);
+        console.error('❌ Notion API error code:', (error as unknown as Record<string, unknown>)?.code);
       }
-      // @ts-ignore
+      // @ts-expect-error - Notion API error may have additional properties
       if (error.status) {
-        console.error('❌ Notion API error status:', (error as any).status);
+        console.error('❌ Notion API error status:', (error as unknown as Record<string, unknown>).status);
       }
       return NextResponse.json({ error: error.message, details: error }, { status: 500 });
     }

@@ -1,18 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useUserStore } from '@/store/userStore';
 import { useSaveResumeStore, RawNotionSaveResume, UpdateResumeData } from '@/store/saveResumeStore';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Edit2, Save, X, Check } from 'lucide-react';
+import { Edit2, X, Check } from 'lucide-react';
 //import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface NotionUser {
@@ -59,6 +58,28 @@ export default function DashboardPage() {
   const [editValues, setEditValues] = useState<Partial<ChefResumeData>>({});
   const [currentResumeId, setCurrentResumeId] = useState<string | null>(null);
 
+  // Extract user data from Notion properties
+  const getUserName = () => {
+    if (!currentUser?.properties?.name?.title) return '';
+    return currentUser.properties.name.title[0]?.plain_text || '';
+  };
+
+  const getUserEmail = useCallback(() => {
+    return currentUser?.properties?.email?.email || '';
+  }, [currentUser?.properties?.email?.email]);
+
+  const getUserRole = () => {
+    return currentUser?.properties?.role?.select?.name || '';
+  };
+
+  // const getUserPhoto = () => {
+  //   return currentUser?.properties?.photo?.url || '';
+  // };
+
+  const getIsChef = useCallback(() => {
+    return currentUser?.properties?.chef?.select?.name || '';
+  }, [currentUser?.properties?.chef?.select?.name]);
+
   useEffect(() => {
     const loadAllUsers = async () => {
       try {
@@ -71,7 +92,7 @@ export default function DashboardPage() {
     };
 
     loadAllUsers();
-  }, [fetchUsers]);
+  }, [fetchUsers, getIsChef]);
 
   // Find current user by comparing Clerk email with Notion data
   useEffect(() => {
@@ -93,7 +114,7 @@ export default function DashboardPage() {
         setCurrentUser(null);
       }
     }
-  }, [clerkUser?.emailAddresses, users]);
+  }, [clerkUser?.emailAddresses, users, getIsChef, getUserEmail]);
 
   // Fetch saved resumes if user is a chef
   useEffect(() => {
@@ -101,7 +122,7 @@ export default function DashboardPage() {
       console.log('🔍 User is a chef, fetching saved resumes...');
       fetchSavedResumes();
     }
-  }, [currentUser, fetchSavedResumes]);
+  }, [currentUser, fetchSavedResumes, getIsChef]);
 
   // Find matching resume for the current user
   useEffect(() => {
@@ -126,7 +147,7 @@ export default function DashboardPage() {
         setCurrentResumeId(null);
       }
     }
-  }, [currentUser, savedResumes]);
+  }, [currentUser, savedResumes, getIsChef, getUserEmail]);
 
   // Console log all users whenever they change
   useEffect(() => {
@@ -143,28 +164,6 @@ export default function DashboardPage() {
       // });
     }
   }, [users]);
-
-  // Extract user data from Notion properties
-  const getUserName = () => {
-    if (!currentUser?.properties?.name?.title) return '';
-    return currentUser.properties.name.title[0]?.plain_text || '';
-  };
-
-  const getUserEmail = () => {
-    return currentUser?.properties?.email?.email || '';
-  };
-
-  const getUserRole = () => {
-    return currentUser?.properties?.role?.select?.name || '';
-  };
-
-  // const getUserPhoto = () => {
-  //   return currentUser?.properties?.photo?.url || '';
-  // };
-
-  const getIsChef = () => {
-    return currentUser?.properties?.chef?.select?.name || '';
-  };
 
   // Process raw resume data to match ChefResumeData interface
   const processResumeData = (rawResume: RawNotionSaveResume): ChefResumeData => {
@@ -191,7 +190,7 @@ export default function DashboardPage() {
     };
   };
 
-  const handleEditField = (fieldName: string, currentValue: any) => {
+  const handleEditField = (fieldName: string, currentValue: unknown) => {
     setEditingField(fieldName);
     setEditValues({ [fieldName]: currentValue });
   };
@@ -229,7 +228,7 @@ export default function DashboardPage() {
     }
   };
 
-  const renderField = (fieldName: string, label: string, value: any, type: 'text' | 'number' | 'textarea' | 'select' | 'checkbox' = 'text', options?: string[]) => {
+  const renderField = (fieldName: string, label: string, value: unknown, type: 'text' | 'number' | 'textarea' | 'select' | 'checkbox' = 'text', options?: string[]) => {
     const isEditing = editingField === fieldName;
     const editValue = editValues[fieldName as keyof ChefResumeData];
 

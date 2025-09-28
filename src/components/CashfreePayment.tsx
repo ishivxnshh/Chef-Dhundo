@@ -43,7 +43,7 @@ const CashfreePayment: React.FC<CashfreePaymentProps> = ({
       try {
         console.log('🔄 Initializing Cashfree SDK...');
         const cashfreeInstance = await load({
-          mode: "sandbox" // Change to "sandbox" for testing
+          mode: "production" // Change to "sandbox" for testing
         });
         console.log('✅ Cashfree SDK initialized successfully:', cashfreeInstance);
         setCashfree(cashfreeInstance);
